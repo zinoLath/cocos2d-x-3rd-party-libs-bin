@@ -20,10 +20,26 @@ macro(set_openssl_sub_target sub_lib_name)
     INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include/${platform_name}"
   )
   if(WINDOWS)
-    set_target_properties(${sub_target_name} PROPERTIES
-      IMPORTED_LOCATION "${platform_spec_path}/lib${sub_lib_name}-1_1.dll"
-      IMPORTED_IMPLIB "${platform_spec_path}/lib${sub_lib_name}.lib"
-    )
+    if(WIN64)
+      if(${sub_lib_name} STREQUAL "ssl")
+        set_target_properties(${sub_target_name} PROPERTIES
+          IMPORTED_LOCATION "${platform_spec_path}/${sub_lib_name}-47.dll"
+          IMPORTED_IMPLIB "${platform_spec_path}/${sub_lib_name}-47.lib"
+        )
+      elseif(${sub_lib_name} STREQUAL "crypto")
+        set_target_properties(${sub_target_name} PROPERTIES
+          IMPORTED_LOCATION "${platform_spec_path}/${sub_lib_name}-45.dll"
+          IMPORTED_IMPLIB "${platform_spec_path}/${sub_lib_name}-45.lib"
+        )
+      else()
+        message(FATAL_ERROR "")
+      endif()
+    else()
+      set_target_properties(${sub_target_name} PROPERTIES
+        IMPORTED_LOCATION "${platform_spec_path}/lib${sub_lib_name}-1_1.dll"
+        IMPORTED_IMPLIB "${platform_spec_path}/lib${sub_lib_name}.lib"
+      )
+    endif()
   else()
     set_target_properties(${sub_target_name} PROPERTIES
       IMPORTED_LOCATION "${platform_spec_path}/lib${sub_lib_name}.a"

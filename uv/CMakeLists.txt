@@ -17,10 +17,17 @@ set_target_properties(${target_name} PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 if(WINDOWS)
-  set_target_properties(${target_name} PROPERTIES
-    IMPORTED_LOCATION "${platform_spec_path}/${lib_name}.dll"
-    IMPORTED_IMPLIB "${platform_spec_path}/${lib_name}_a.lib"
-  )
+  if(WIN64)
+    set_target_properties(${target_name} PROPERTIES
+      IMPORTED_LOCATION "${platform_spec_path}/lib${lib_name}.dll"
+      IMPORTED_IMPLIB "${platform_spec_path}/lib${lib_name}.lib"
+    )
+  else()
+    set_target_properties(${target_name} PROPERTIES
+      IMPORTED_LOCATION "${platform_spec_path}/${lib_name}.dll"
+      IMPORTED_IMPLIB "${platform_spec_path}/${lib_name}_a.lib"
+    )
+  endif()
 else()
   set_target_properties(${target_name} PROPERTIES
     IMPORTED_LOCATION "${platform_spec_path}/lib${lib_name}_a.a"
