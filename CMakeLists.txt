@@ -142,24 +142,28 @@ endif()
 
 if(WINDOWS)
     if(WIN64)
-        add_subdirectory(win64-specific/gles)
         add_subdirectory(win64-specific/icon)
         add_subdirectory(win64-specific/MP3Decoder)
         add_subdirectory(win64-specific/OggDecoder)
         add_subdirectory(win64-specific/OpenalSoft)
     else()
-        add_subdirectory(win32-specific/gles)
         add_subdirectory(win32-specific/icon)
         add_subdirectory(win32-specific/MP3Decoder)
         add_subdirectory(win32-specific/OggDecoder)
         add_subdirectory(win32-specific/OpenalSoft)
     endif()
     target_link_libraries(external 
-        ext_gles
         ext_icon
         ext_MP3Decoder
         ext_OggDecoder
         ext_OpenalSoft
+    )
+endif()
+
+if(WINDOWS OR LINUX)
+    add_subdirectory(glad)
+    target_link_libraries(external
+        ext_glad
     )
 endif()
 
